@@ -2,17 +2,17 @@ import React, { useEffect, Fragment, useContext} from 'react';
 import Spinner from '../layout/Spinner';
 import Repos from '../repos/Repos'
 import { Link } from 'react-router-dom';
-import GithubContext from '../../context/github/githubContext';
+import BeetContext from '../../context/beet/beetContext';
 
-const User = ({ match}) => {
+const Image = ({ match}) => {
 
-    const githubContext = useContext(GithubContext);
+    const beetContext = useContext(BeetContext);
 
-    const { getUser, loading, user, repos, getUserRepos } = githubContext;
+    const { getImage, loading, image, repos, getImageRepos } = beetContext;
 
     useEffect(() => {
-        getUser(match.params.login)
-        getUserRepos(match.params.login)
+        getImage(match.params.login)
+        getImageRepos(match.params.login)
     }, [])
     
 
@@ -31,7 +31,7 @@ const User = ({ match}) => {
             public_repos,
             public_gists,
             hireable
-        } = user;
+        } = image;
 
 
     if (loading) return <Spinner />;
@@ -108,4 +108,4 @@ const User = ({ match}) => {
   );
 }
 
-export default User;
+export default Image;

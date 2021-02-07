@@ -1,12 +1,12 @@
 import React, { useReducer } from 'react'
 import axios from 'axios';
-import GithubContext from './githubContext';
-import GithubReducer from './githubReducer';
+import BeetContext from './beetContext';
+import BeetReducer from './beetReducer';
 import {
-    SEARCH_USERS,
+    SEARCH_IMAGES,
     SET_LOADING,
-    CLEAR_USERS,
-    GET_USER,
+    CLEAR_IMAGES,
+    GET_IMAGE,
     GET_REPOS
 } from '../types';
 
@@ -22,18 +22,18 @@ if(process.env.NODE_EV !== 'production') {
 }
 
 
-const GithubState = props => {
+const BeetState = props => {
     const initialState = {
-        users: [],
-        user: {},
+        images: [],
+        image: {},
         repos: [],
         loading: false
     }
 
-    const [state, dispatch] = useReducer(GithubReducer, initialState);
+    const [state, dispatch] = useReducer(BeetReducer, initialState);
 
     // Search Users
-    const searchUsers = async text => {
+    const searchImages = async text => {
         setLoading();
 
         const res = await axios.get(
@@ -41,31 +41,31 @@ const GithubState = props => {
         ${githubClientId}&client_secret=${githubClientSecret}`);
 
         dispatch({
-            type: SEARCH_USERS,
+            type: SEARCH_IMAGES,
             payload:res.data.items
         })
     }
 
     // Get User
-    const getUser = async(username) => {
+    const getImage = async(imagename) => {
         setLoading();
     
         const res = await axios.get(
-          `https://api.github.com/users/${username}?client_id=
+          `https://api.github.com/users/${imagename}?client_id=
           ${githubClientId}&client_secret=${githubClientSecret}`);
         
         dispatch({
-            type: GET_USER,
+            type: GET_IMAGE,
             payload: res.data
         })
         }
 
     // Get Repos
-    const getUserRepos = async(username) => {
+    const getImageRepos = async(imagename) => {
         setLoading();
     
         const res = await axios.get(
-          `https://api.github.com/users/${username}/repos?per_page=5&sort=created:asc&client_id=
+          `https://api.github.com/users/${imagename}/repos?per_page=5&sort=created:asc&client_id=
           ${githubClientId}&client_secret=${githubClientSecret}`);
 
           dispatch({
@@ -75,27 +75,27 @@ const GithubState = props => {
         }
 
     // Clear Users
-    const clearUsers = () => dispatch({ type: CLEAR_USERS})
+    const clearImages = () => dispatch({ type: CLEAR_IMAGES})
 
     // Set Loading
     const setLoading = () => dispatch( { type: SET_LOADING})
 
     return (
-        <GithubContext.Provider
+        <BeetContext.Provider
             value = {{
-                users: state.users,
-                user: state.user,
+                images: state.images,
+                image: state.image,
                 repos: state.repos,
                 loading: state.loading,
-                searchUsers,
-                clearUsers,
-                getUser,
-                getUserRepos
+                searchImages,
+                clearImages,
+                getImage,
+                getImageRepos
             }}
             >
                 {props.children}
-        </GithubContext.Provider>
+        </BeetContext.Provider>
         );
     };
 
-export default GithubState;
+export default BeetState;

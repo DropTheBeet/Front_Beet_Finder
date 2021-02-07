@@ -1,29 +1,29 @@
 import {
-    SEARCH_USERS,
+    SEARCH_IMAGES,
     SET_LOADING,
-    CLEAR_USERS,
-    GET_USER,
+    CLEAR_IMAGES,
+    GET_IMAGE,
     GET_REPOS
 } from '../types';
 
 export default (state, action) => {
     switch(action.type) {
-        case SEARCH_USERS:
+        case SEARCH_IMAGES:
             return {
                 ...state,
-                users: action.payload,
+                images: action.payload,
                 loading: false
             };
-        case GET_USER:
+        case GET_IMAGE:
             return {
                 ...state,
-                user : action.payload,
+                image : action.payload,
                 loading: false
             }
-        case CLEAR_USERS:
+        case CLEAR_IMAGES:
             return {
                 ...state,
-                users: [],
+                images: [],
                 loading: false
             }
         case GET_REPOS: {

@@ -1,37 +1,55 @@
 import React from 'react';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import Navbar from './components/layout/Navbar';
-import User from './components/users/User';
-import Alert from './components/layout/Alert';
+import Image from './components/images/Image';
+import Alerti from './components/layout/Alerti';
+import Alerts from './components/layout/Alerts';
 import Home from './components/pages/Home';
 import About from './components/pages/About';
 import NotFound from './components/pages/NotFound';
+import Register from './components/auth/Register'
+import Login from './components/auth/Login'
+import PrivateRoute from './components/routing/PrivateRoute';
 
-import GithubState from './context/github/githubState'
-import AlertState from './context/alert/alertState'
+import BeetState from './context/beet/beetState'
+import AuthState from './context/auth/AuthState'
+import AlertiState from './context/alerti/alertiState'
+import AlertState from './context/alert/AlertState'
+import setAuthToken from './utils/setAuthToken'
 import './App.css';
+
+if(localStorage.token) {
+  setAuthToken(localStorage.token);
+}
 
 const App = () => {
 
   return  (
-    <GithubState>
-      <AlertState>
+    <AuthState>
+    <BeetState>
+    <AlertState>
+      <AlertiState>
       <Router>
     <div className="App">
       <Navbar />
       <div className='container'>
-        <Alert />
+        <Alerts />
+        <Alerti />
         <Switch>
-          <Route exact path='/' component={Home}/>
+          <PrivateRoute exact path='/' component={Home}/>
           <Route exact path='/about' component={About} />
-          <Route exact path='/user/:login' component={User} />
+          <Route exact path='/register' component={Register} />
+          <Route exact path='/login' component={Login} />
+          <Route exact path='/image/:login' component={Image} />
           <Route component={NotFound} />
         </Switch>
       </div>
     </div>
     </Router>
+    </AlertiState>
     </AlertState>
-    </GithubState>
+    </BeetState>
+    </AuthState>
     );
   
 }

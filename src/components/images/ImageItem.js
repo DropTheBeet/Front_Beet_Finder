@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-const UserItem = ({user : { login, avatar_url, html_url }}) => {
+const ImageItem = ({image : { login, avatar_url, html_url }}) => {
 
     return (
         <div className="card text-center">
@@ -12,7 +12,7 @@ const UserItem = ({user : { login, avatar_url, html_url }}) => {
             style={{ width: '60px'}}/>
             <h3>{login}</h3>
 
-            <Link to={`/user/${login}`} className="btn btn-dark btn-sm my-1">
+            <Link to={`/image/${login}`} className="btn btn-dark btn-sm my-1">
                 More
                 </Link>
         </div>
@@ -20,10 +20,10 @@ const UserItem = ({user : { login, avatar_url, html_url }}) => {
 
 }
 
-UserItem.propTypes = {
-    user:PropTypes.object.isRequired,
+ImageItem.propTypes = {
+    image:PropTypes.object.isRequired,
 }
 
 
 //inline style 사용시에는 {{}}  두개의 괄호를 사용하여야 한다
-export default UserItem
+export default ImageItem
