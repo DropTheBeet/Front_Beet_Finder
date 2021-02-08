@@ -59,7 +59,7 @@ const Navbar = ({icon, title}) => {
     return (
         <div className="navbar bg-primary">
             <h1>
-                <i onClick={} className={icon} /> {title}
+                <i className={icon} /> {title}
             </h1>
             <ul>
                 {isAuthenticated ? authLinks : guestLinks}
