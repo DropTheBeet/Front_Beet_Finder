@@ -387,6 +387,10 @@ table th {
   margin-right: 0.6rem;
 }
 
+.cursor_test {
+  cursor: pointer;
+}
+
 /* Mobile Styles */
 @media (max-width: 700px) {
   .hide-sm {

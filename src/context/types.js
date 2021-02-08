@@ -1,7 +1,7 @@
 export const SEARCH_IMAGES = 'SEARCH_IMAGES';
 export const GET_IMAGES = 'GET_IMAGES';
 export const CLEAR_IMAGES = 'CLEAR_IMAGES';
-export const GET_REPOS = 'GET_REPOS';
+export const SELECT_IMAGES = 'SELECT_IMAGES';
 export const SET_LOADING = 'SET_LOADING';
 export const SET_ALERTI = 'SET_ALERTI';
 export const REMOVE_ALERTI = 'REMOVE_ALERTI';
@@ -17,3 +17,4 @@ export const LOGIN_FAIL = 'LOGIN_FAIL';
 export const LOGOUT = 'LOGOUT';
 export const CLEAR_ERRORS = 'CLEAR_ERRORS';
 export const SET_SEARCH_TAGS = 'SET_SEARCH_TAGS';
+export const FALSE_LOADING = 'FALSE_LOADING';

@@ -7,10 +7,10 @@ import Alerts from './components/layout/Alerts';
 import Home from './components/pages/Home';
 import Favorite from './components/pages/Favorite';
 import Public from './components/pages/Public';
-import About from './components/pages/About';
+import Upload from './components/pages/Upload';
 import NotFound from './components/pages/NotFound';
-import Register from './components/auth/Register'
-import Login from './components/auth/Login'
+import Register from './components/auth/Register';
+import Login from './components/auth/Login';
 import PrivateRoute from './components/routing/PrivateRoute';
 
 import BeetState from './context/beet/beetState'
@@ -41,7 +41,7 @@ const App = () => {
           <PrivateRoute exact path='/' component={Home}/>
           <PrivateRoute exact path='/public' component={Public}/>
           <PrivateRoute exact path='/favorite' component={Favorite}/>
-          <Route exact path='/about' component={About} />
+          <Route exact path='/upload' component={Upload} />
           <Route exact path='/register' component={Register} />
           <Route exact path='/login' component={Login} />
           <Route exact path='/image/:img_no' component={Image} />

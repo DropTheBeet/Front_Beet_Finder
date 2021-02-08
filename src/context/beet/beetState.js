@@ -8,8 +8,9 @@ import {
     SET_LOADING,
     CLEAR_IMAGES,
     GET_IMAGE,
-    GET_REPOS,
-    SET_SEARCH_TAGS
+    SELECT_IMAGES,
+    SET_SEARCH_TAGS,
+    FALSE_LOADING
 } from '../types';
 
 
@@ -32,7 +33,9 @@ const BeetState = props => {
 
         search_tags:[],
 
-        loading: false
+        loading: false,
+
+        selected_files: null,
     }
 
     const [state, dispatch] = useReducer(BeetReducer, initialState);
@@ -125,6 +128,23 @@ const BeetState = props => {
     }
 
 
+    const fileHandler = (e) => {
+        
+        setLoading();
+        
+        const files = e.target.files;
+
+        dispatch({
+            type : SELECT_IMAGES,
+            payload : files
+        })
+    }
+
+
+
+
+
+
 
     
     // Get Repos
@@ -147,6 +167,8 @@ const BeetState = props => {
     // Set Loading
     const setLoading = () => dispatch( { type: SET_LOADING})
 
+    const setLoadingFalser = () => dispatch( { type: FALSE_LOADING})
+
     // Set SearchTags
     const setSearchTags = (props) =>  dispatch( { type: SET_SEARCH_TAGS, payload: props})
     
@@ -159,12 +181,16 @@ const BeetState = props => {
                 image: state.image,
                 tag_list: state.tag_list,
                 search_tags : state.search_tags,
+                selected_files : state.selected_files,
                 searchImages,
                 clearImages,
                 getHomeImages,
                 setSearchTags,
                 getPublicImages,
-                getFavoriteImages
+                getFavoriteImages,
+                fileHandler,
+                setLoading,
+                setLoadingFalser
             }}
             >
                 {props.children}

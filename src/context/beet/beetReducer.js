@@ -3,8 +3,9 @@ import {
     SET_LOADING,
     CLEAR_IMAGES,
     GET_IMAGE,
-    GET_REPOS,
-    SET_SEARCH_TAGS
+    SELECT_IMAGES,
+    SET_SEARCH_TAGS,
+    FALSE_LOADING
 } from '../types';
 
 export default (state, action) => {
@@ -29,10 +30,10 @@ export default (state, action) => {
                 images: [],
                 loading: false
             }
-        case GET_REPOS: {
+        case SELECT_IMAGES: {
             return {
                 ...state,
-                repos: action.payload,
+                selected_files: action.payload,
                 loading: false
             }
         }
@@ -41,6 +42,11 @@ export default (state, action) => {
                 ...state,
                 loading: true
             };
+        case FALSE_LOADING:
+            return {
+                ...state,
+                loading: false
+            }
         case SET_SEARCH_TAGS:
             return {
                 ...state,

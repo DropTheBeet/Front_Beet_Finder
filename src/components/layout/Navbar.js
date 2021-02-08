@@ -1,19 +1,45 @@
 import React, { Fragment, useContext, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
-import AuthContext from '../../context/auth/authContext'
+import AlertiContext from '../../context/alerti/alertiContext'
+import AuthContext from '../../context/auth/authContext';
+import BeetContext from '../../context/beet/beetContext';
+import axios from 'axios';
 
 const Navbar = ({icon, title}) => {
-    const authContext = useContext(AuthContext)
+    const authContext = useContext(AuthContext);
+    const beetContext = useContext(BeetContext);
+    const alertiContext = useContext(AlertiContext);
 
-    const [file, setFile] = useState()
-
+    const { selected_files, setLoading, setLoadingFalser } = beetContext
     const { isAuthenticated, logout, user } = authContext;
 
     const onLogout = () => {
         logout();
     }
 
+    const fileUploader = (e) => {
+    try {
+        setLoading();
+        const formData = new FormData();
+        for(const file of selected_files){
+            formData.append("upload_image", file);
+        }
+
+        const config = {
+            headers: {
+              "content-type": "multipart/form-data"
+           }
+        };
+
+        axios.post(`/home/upload`, formData, config)
+        setLoadingFalser();
+    } catch (error) {
+        setLoadingFalser()
+        console.log(error)
+        alertiContext.setAlerti('Something is wrong, contact to Webmaster ', 'light');
+    }
+    }
 
     const authLinks = (
     <Fragment>
@@ -27,7 +53,7 @@ const Navbar = ({icon, title}) => {
             <Link to="/favorite">Favorite</Link>
         </li>
         <li>
-            <Link to="/about">About</Link>
+            <Link to="/upload">Upload</Link>
         </li>
         
         <li>Hello { user }</li>
@@ -51,15 +77,13 @@ const Navbar = ({icon, title}) => {
         </Fragment>
         );
 
-    
-
 
     
 
     return (
         <div className="navbar bg-primary">
             <h1>
-                <i className={icon} /> {title}
+            <i className={icon} onClick={fileUploader} />  {title}
             </h1>
             <ul>
                 {isAuthenticated ? authLinks : guestLinks}
@@ -68,9 +92,10 @@ const Navbar = ({icon, title}) => {
     )              
 }
 
+
 Navbar.defaultProps = {
     title: 'Beet Finder',
-    icon: 'fas fa-camera'
+    icon: 'fas fa-camera cursor_test'
 };
 
 Navbar.propTypes = {
