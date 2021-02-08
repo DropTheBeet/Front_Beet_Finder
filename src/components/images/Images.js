@@ -1,14 +1,21 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import ImageItem from './ImageItem';
 import Spinner from '../layout/Spinner';
 import BeetContext from '../../context/beet/beetContext';
 
 
-const Images = () => {
+const Images = ({ path }) => {
     const beetContext = useContext(BeetContext);
 
-    const { loading, images } = beetContext;
-    
+    const { loading, images, getFavoriteImages} = beetContext;
+
+
+    useEffect(() => {
+        if(path ==="Favorite"){
+            getFavoriteImages()
+        }
+    }, [])
+
     
     if(loading) {
         return <Spinner />
@@ -16,7 +23,7 @@ const Images = () => {
         return (
             <div style= {imageStyle}>
                 {images.map(image => (
-                    <ImageItem key={image.id} image={image} />
+                    <ImageItem key={image.img_no} image={image} />
                 ))}
             </div>
         );

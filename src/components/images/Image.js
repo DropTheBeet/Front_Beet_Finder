@@ -4,108 +4,146 @@ import Repos from '../repos/Repos'
 import { Link } from 'react-router-dom';
 import BeetContext from '../../context/beet/beetContext';
 
-const Image = ({ match}) => {
+const Image = ({ match }) => {
 
     const beetContext = useContext(BeetContext);
 
-    const { getImage, loading, image, repos, getImageRepos } = beetContext;
+    const { getImage, loading, image, like_or_unlike} = beetContext;
 
     useEffect(() => {
-        getImage(match.params.login)
-        getImageRepos(match.params.login)
+        getImage(match.params.img_no)
     }, [])
     
-
-
     const {
-            name,
-            company,
-            avatar_url,
-            location,
-            bio,
-            blog,
-            login,
-            html_url,
-            followers,
-            following,
-            public_repos,
-            public_gists,
-            hireable
+        filename,
+        img_no,
+        img_url,
+        like,
+        profile_thum,
+        reg_date,
+        user_id,
         } = image;
-
 
     if (loading) return <Spinner />;
     
     
     return (
         <Fragment>
-            <Link to='/' className='btn btn-light'>
-            Back To Search
-            </Link>
-            Hireable:{' '}
-            {hireable ? (
-            <i className='fas fa-check text-success' />
-            ) : (
-            <i className='fas fa-times-circle text-danger' />
-            )}
-            <div className='card grid-2'>
-            <div className='all-center'>
-                <img
-                src={avatar_url}
-                className='round-img'
-                alt=''
-                style={{ width: '150px' }}
-                />
-                <h1>{name}</h1>
-                <p>Location: {location}</p>
+ <Container
+      onClick={() => {
+        setOverlay(true);
+        DetailImg(img_no);
+      }}
+    >
+    <Button
+      onClick={() => onClickDelete(img_no)}
+    />
+      <Overlay
+        style={{ maxWidth: "800px" }}
+        configs={configs}
+        isOpen={isOpen}
+        closeOverlay={closeOverlay}
+      >
+        <div>
+          <DetailHeader>
+            <div style={{ display: "flex" }}>
+              <Thum bgUrl={`${thumbUrl}`} />
+              <List>
+                <Item>{imgUser}</Item>
+                <Item>{reg_date.slice(0, 17)}</Item>
+              </List>
             </div>
-            <div>
-                {bio && (
-                <Fragment>
-                    <h3>Bio</h3>
-                    <p>{bio}</p>
-                </Fragment>
-                )}
-                <a href={html_url} className='btn btn-dark my-1'>
-                Visit Github Profile
-                </a>
-                <ul>
-                <li>
-                    {login && (
-                    <Fragment>
-                        <strong>Username: </strong> {login}
-                    </Fragment>
-                    )}
-                </li>
-
-                <li>
-                    {company && (
-                    <Fragment>
-                        <strong>Company: </strong> {company}
-                    </Fragment>
-                    )}
-                </li>
-
-                <li>
-                    {blog && (
-                    <Fragment>
-                        <strong>Website: </strong> {blog}
-                    </Fragment>
-                    )}
-                </li>
-                </ul>
-            </div>
-            </div>
-
-            <div className="card text-center">
-                <div className="badge badge-primary">Followers: {followers}</div>
-                <div className="badge badge-success">Following: {following}</div>
-                <div className="badge badge-light">Public Repos: {public_repos}</div>
-                <div className="badge badge-primary">Public Gists: {public_gists}</div>
-            </div>
-            <Repos repos={repos} />
+            <GiBeet
+              onClick={onClickLike}
+              color={like ? "#F04F53" : "black"}
+              size="50px"
+              data-img-no={img_no}
+            />
+          </DetailHeader>
+          <ImageDetail bgUrl={`${urlImg}`}></ImageDetail>
+        </div>
+      </Overlay>
+      <ImageContainer>
+        <Image bgUrl={imageUrl && `${imageUrl}`}></Image>
+      </ImageContainer>
+    </Container>
         </Fragment>
   );
 }
+
+
+const Container = styled.div`
+  font-size: 12px;
+`;
+
+const Image = styled.div`
+  content: url("${({ bgUrl }) => bgUrl}");
+  height: auto;
+  width: 300px;
+  background-size: cover;
+  border-radius: 4px;
+  background-position: center center;
+  transition: opacity 0.1s linear;
+`;
+
+const ImageContainer = styled.div`
+  margin-bottom: 5px;
+  position: relative;
+  &:hover {
+    ${Image} {
+      opacity: 0.5;
+    }
+  }
+`;
+const ImageDetail = styled.img`
+  content: url("${({ bgUrl }) => bgUrl}");
+  height: 100%;
+  width: 550px;
+  object-fit: cover;
+  border-radius: 4px;
+  background-position: center center;
+  transition: opacity 0.1s linear;
+`;
+
+const DetailHeader = styled.div`
+  display: flex;
+  align-content: center;
+  margin-bottom: 5px;
+  justify-content: space-between;
+  padding-right: 25px;
+`;
+
+const Thum = styled.img`
+  background-image: url("${({ bgUrl }) => bgUrl}");
+
+  background-size: cover;
+  height: 60px;
+  width: 60px;
+  border-radius: 70%;
+
+  overflow: hidden;
+  object-fit: cover;
+`;
+
+const List = styled.ul`
+  display: flex;
+`;
+
+const Item = styled.li`
+  height: 50px;
+  font-size: 23px;
+  font-weight: bold;
+  color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-left: 15px;
+  margin-right: 10px;
+`;
+
+const Button = styled.button`
+`
+
 
 export default Image;

@@ -1,10 +1,12 @@
-import React, {Fragment, useContext} from 'react'
+import React, { Fragment, useContext, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import AuthContext from '../../context/auth/authContext'
 
 const Navbar = ({icon, title}) => {
     const authContext = useContext(AuthContext)
+
+    const [file, setFile] = useState()
 
     const { isAuthenticated, logout, user } = authContext;
 
@@ -19,8 +21,15 @@ const Navbar = ({icon, title}) => {
             <Link to="/">Home</Link>
         </li>
         <li>
+            <Link to="/public">Public</Link>
+        </li>
+        <li>
+            <Link to="/favorite">Favorite</Link>
+        </li>
+        <li>
             <Link to="/about">About</Link>
         </li>
+        
         <li>Hello { user }</li>
         <li>
             <a onClick={onLogout} href="#!">
@@ -42,16 +51,21 @@ const Navbar = ({icon, title}) => {
         </Fragment>
         );
 
+    
+
+
+    
+
     return (
         <div className="navbar bg-primary">
             <h1>
-                <i className={icon} /> {title}
+                <i onClick={} className={icon} /> {title}
             </h1>
             <ul>
                 {isAuthenticated ? authLinks : guestLinks}
             </ul>
         </div>
-    )
+    )              
 }
 
 Navbar.defaultProps = {

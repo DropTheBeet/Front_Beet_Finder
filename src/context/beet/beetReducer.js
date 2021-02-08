@@ -3,7 +3,8 @@ import {
     SET_LOADING,
     CLEAR_IMAGES,
     GET_IMAGE,
-    GET_REPOS
+    GET_REPOS,
+    SET_SEARCH_TAGS
 } from '../types';
 
 export default (state, action) => {
@@ -11,13 +12,15 @@ export default (state, action) => {
         case SEARCH_IMAGES:
             return {
                 ...state,
-                images: action.payload,
+                images: action.payload.img_info,
+                tag_list: action.payload.tag_list,
                 loading: false
             };
         case GET_IMAGE:
             return {
                 ...state,
                 image : action.payload,
+
                 loading: false
             }
         case CLEAR_IMAGES:
@@ -38,6 +41,11 @@ export default (state, action) => {
                 ...state,
                 loading: true
             };
+        case SET_SEARCH_TAGS:
+            return {
+                ...state,
+                search_tags: action.payload
+            }
         default:
             return state;
     }

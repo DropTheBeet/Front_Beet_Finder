@@ -304,7 +304,7 @@ img {
 }
 
 .round-img {
-  border-radius: 50%;
+  border-radius: 0;
 }
 
 /* Forms */
@@ -421,5 +421,24 @@ table th {
   .navbar ul {
     text-align: center;
     justify-content: center;
+  }
+  /* Checkbox */
+  .checkbox_container {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row-reverse;
+  }
+
+  .checkbox_item {
+    flex: 1 1 160px;
+    display: inline-block;
+    width: 100;
+  }
+
+  /* lable*/
+  .label {
+    display: inline-block;
+    width: 100px;
+    line-height: 50px;
   }
 }

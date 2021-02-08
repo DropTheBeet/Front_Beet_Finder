@@ -32,7 +32,7 @@ const AuthState = props => {
     }
     // storage에 있는 token을 꺼내서 headers에 세팅
     // @todo - load token into global headers
-    // token을 체크해서 권한이 있는 유저인지 확인해 주는 프로세스
+
     try {
       const res = await axios.get('/auth');
 
@@ -54,12 +54,12 @@ const AuthState = props => {
     }
 
     try {
-      const res = await axios.post('/sign-up', formData, config);
+    const res = await axios.post('/sign-up', formData, config);
     
       dispatch({
         type: REGISTER_SUCCESS,
         payload: res.data
-      });
+      });  
       loadUser();
     } catch (err) {
       dispatch({
@@ -102,7 +102,7 @@ const AuthState = props => {
 
   // Logout
   const logout = () => dispatch({ type: LOGOUT })
-  
+
   // Clear Errors
   const clearErrors = () => dispatch({ type: CLEAR_ERRORS })
   

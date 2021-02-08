@@ -5,6 +5,8 @@ import Image from './components/images/Image';
 import Alerti from './components/layout/Alerti';
 import Alerts from './components/layout/Alerts';
 import Home from './components/pages/Home';
+import Favorite from './components/pages/Favorite';
+import Public from './components/pages/Public';
 import About from './components/pages/About';
 import NotFound from './components/pages/NotFound';
 import Register from './components/auth/Register'
@@ -37,10 +39,12 @@ const App = () => {
         <Alerti />
         <Switch>
           <PrivateRoute exact path='/' component={Home}/>
+          <PrivateRoute exact path='/public' component={Public}/>
+          <PrivateRoute exact path='/favorite' component={Favorite}/>
           <Route exact path='/about' component={About} />
           <Route exact path='/register' component={Register} />
           <Route exact path='/login' component={Login} />
-          <Route exact path='/image/:login' component={Image} />
+          <Route exact path='/image/:img_no' component={Image} />
           <Route component={NotFound} />
         </Switch>
       </div>
