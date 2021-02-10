@@ -6,20 +6,45 @@ import SearchItem from './SearchItem'
 
 
 
+const CmajorFIlter = ({sTag}) => {
+    const beetContext = useContext(BeetContext);
+    const { tag_list } = beetContext;
+
+    return
+        <div>
+            <div>{sTag}</div>
+            <div>{tag_list.filter( data => data.c_major == sTag)}</div>
+        </div>
+}
+
+
 
 const Search = ({path}) => {
     const beetContext = useContext(BeetContext);
     const alertiContext = useContext(AlertiContext);
-    const { tag_list, search_tags, getHomeImages, setSearchTags, getPublicImages } = beetContext;
+    const { tag_list,
+        search_tags,
+        getHomeImages,
+        setSearchTags, 
+        getPublicImages,
+        getFavoriteImages,
+        setClickTypeR,
+        setClickTypeS,
+        clearClickType
+    } = beetContext;
 
 
     useEffect ( () => {
         if ( path ==="Public"){
             getPublicImages({ 'tags' : []})
+            setClickTypeR()
+        } else if (path =="Favorite") {
+            getFavoriteImages({ 'tags' : [], 'type' : "L"})
+            clearClickType()   
         } else {
             getHomeImages({ 'tags' : []})
-        }
-      
+            clearClickType()   
+        }    
     }, [])
 
     useEffect ( () => {     
@@ -41,15 +66,23 @@ const Search = ({path}) => {
             alertiContext.setAlerti('Please enter something', 'light');
         } else {
             if ( path ==="Public"){
-                beetContext.getPublicImages( { 'tags' :
+                getPublicImages( { 'tags' :
                 (search_tags.filter( data => data.checked === true)).map(data => data.tag_no)});
+                setClickTypeS()
+            } else if (path === "Home") {
+                getHomeImages( { 'tags' :
+                (search_tags.filter( data => data.checked === true)).map(data => data.tag_no)});
+                clearClickType()
             } else {
-                beetContext.getHomeImages( { 'tags' :
-             (search_tags.filter( data => data.checked === true)).map(data => data.tag_no)});
+                getFavoriteImages( { 'tags' :
+                (search_tags.filter( data => data.checked === true)).map(data => data.tag_no),
+                'type' : "L" });
+                clearClickType()
             }
-            
         }
     } 
+
+    const tagSet =  new Array (new Set(tag_list.map(tag_info => tag_info.c_major)))
 
 
 
@@ -57,8 +90,9 @@ const Search = ({path}) => {
         <Fragment>
             <div className="checkbox-container">
                 <div className="checkbox_item">
-                {tag_list.map(tag_info => (
-                    <SearchItem key={tag_info.tag_no} tag={tag_info} />
+                {
+                tag_list.map(tag_info => (
+                    <SearchItem key={tag_info.tag_no} tag={tag_info} path={path} />
                 ))}
                 </div>
             </div>

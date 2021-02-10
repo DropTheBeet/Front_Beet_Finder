@@ -4,7 +4,9 @@ import Images from '../images/Images';
 import AuthContext from '../../context/auth/authContext'
 import BeetContext from '../../context/beet/beetContext';
 
-const Home = (props) => {
+
+
+const Favorite = (props) => {
     const authContext = useContext(AuthContext);
     const beetContext = useContext(BeetContext);
 
@@ -16,10 +18,10 @@ const Home = (props) => {
 
     return (
         <Fragment>
-            <Search path="Home" />
-            <Images path="Home"/>
+            <Search path = "Favorite"/>
+            <Images path = "Favorite" />
         </Fragment>
     )
 };
 
-export default Home
+export default Favorite

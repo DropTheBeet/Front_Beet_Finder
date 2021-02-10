@@ -11,7 +11,8 @@ import {
     LOGIN_SUCCESS,
     LOGIN_FAIL,
     LOGOUT,
-    CLEAR_ERRORS
+    CLEAR_ERRORS,
+    SET_INTERVAL
 } from '../types';
 
 const AuthState = props => {
@@ -20,8 +21,10 @@ const AuthState = props => {
       isAuthenticated: null,
       loading: true,
       user: null,
-      error: null
+      error: null,
+      intervalFunction: null,
   };
+
 
   const [state, dispatch] = useReducer(authReducer, initialState);
 
@@ -71,7 +74,7 @@ const AuthState = props => {
    }
 
 
-  
+
 
   // Login User
   const login = async formData => {
@@ -114,11 +117,12 @@ const AuthState = props => {
           loading: state.loading,
           user: state.user,
           error: state.error,
+          intervalFunction : state.intervalFunction,
           register,
           loadUser,
           login,
           logout,
-          clearErrors
+          clearErrors,
       }}
     >
       {props.children}

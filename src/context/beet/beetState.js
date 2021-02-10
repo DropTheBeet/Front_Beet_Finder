@@ -2,7 +2,7 @@ import React, { useReducer } from 'react'
 import axios from 'axios';
 import BeetContext from './beetContext';
 import BeetReducer from './beetReducer';
-import AuthContext from '../auth/authContext'
+
 import {
     SEARCH_IMAGES,
     SET_LOADING,
@@ -10,25 +10,21 @@ import {
     GET_IMAGE,
     SELECT_IMAGES,
     SET_SEARCH_TAGS,
-    FALSE_LOADING
+    FALSE_LOADING,
+    CLEAR_IMAGE,
+    SET_CLICK_TYPE_R,
+    SET_CLICK_TYPE_S,
+    CLEAR_CLICK_TYPE,
+    CLEAR_TAG_LIST
 } from '../types';
 
 
 const BeetState = props => {
     const initialState = {
         images:[],
-        image: {  "img_info": {
-            "filename": "2021-01-29 07:14:11.590848KakaoTalk_20210126_143134532.png",
-            "img_no": 8004,
-            "img_url": "https://s3.ap-northeast-2.amazonaws.com/beetbitbucket/2021-01-29 07:14:11.590848KakaoTalk_20210126_143134532.png",
-            "like": false,
-            "profile_thum": "https://s3.ap-northeast-2.amazonaws.com/beetbitbucket/thum_2021-02-01 08:23:15.671852test_zebra_bear_.jpg",
-            "reg_date": "Fri, 29 Jan 2021 16:14:13 GMT",
-            "user_id": "f_testid2",
-            "user_no": 531
-          },
-          "like_or_unlike": false,
-          "user_no": 531},
+
+        image: {},
+
         tag_list: [],
 
         search_tags:[],
@@ -36,6 +32,8 @@ const BeetState = props => {
         loading: false,
 
         selected_files: null,
+
+        click_type: {}
     }
 
     const [state, dispatch] = useReducer(BeetReducer, initialState);
@@ -50,9 +48,9 @@ const BeetState = props => {
 
         const config = {
             headers: {
-              'Content-Type' : 'application/json'
+            'Content-Type' : 'application/json'
             }
-          }
+        }
     try{
         const res = await axios.post('/home', formData, config);
         console.log(res)
@@ -65,8 +63,11 @@ const BeetState = props => {
         dispatch({
             type: CLEAR_IMAGES,            
         })
+        dispatch({
+            type: CLEAR_TAG_LIST,            
+        })
     }
-    }
+}
 
     const getPublicImages = async(formData) => {
         setLoading();
@@ -78,54 +79,156 @@ const BeetState = props => {
               'Content-Type' : 'application/json'
             }
           }
-    try{
-        const res = await axios.post('/public', formData, config);
-        console.log(res)
+        try{
+            const res = await axios.post('/public', formData, config);
+            console.log(res)
 
-        dispatch({
-            type: SEARCH_IMAGES,
-            payload: res.data
-        });
-    } catch {
-        dispatch({
-            type: CLEAR_IMAGES,            
-        })
+            dispatch({
+                type: SEARCH_IMAGES,
+                payload: res.data
+            });
+        } catch {
+            dispatch({
+                type: CLEAR_IMAGES,            
+            })
+            dispatch({
+                type: CLEAR_TAG_LIST,            
+            })
+        }
     }
-    }
 
 
-    const getFavoriteImages = async() => {
+    const getFavoriteImages = async(formData) => {
         setLoading();
 
-        console.log()
+        console.log(formData)
 
-    try{
-        const res = await axios.get('/likeimage');
-        console.log(res)
+        const config = {
+            headers: {
+              'Content-Type' : 'application/json'
+            }
+          }
+        try{
+            const res = await axios.post('/likeimage', formData, config);
+            console.log(res)
 
-        dispatch({
-            type: SEARCH_IMAGES,
-            payload: res.data
-        });
-    } catch {
-        dispatch({
-            type: CLEAR_IMAGES,            
-        })
+            dispatch({
+                type: SEARCH_IMAGES,
+                payload: res.data
+            });
+        } catch {
+            dispatch({
+                type: CLEAR_IMAGES,            
+            })
+            dispatch({
+                type: CLEAR_TAG_LIST,            
+            })
+        }
     }
+
+    const likeApi = (dataImgNo, like, setLike) => {
+        axios
+          .get("/like/" + dataImgNo)
+          .then((res) => {console.log(33333)
+            console.log(res.data.like);
+            if (res.data.like === 1) 
+            {
+                  setLike(1);
+                  console.log(123123);
+            }
+              else if(res.data.like === 0) 
+            {
+                setLike(0);
+                console.log(321321);
+            }
+            
+            console.log(like);
+            console.log(2);
+          })
+          .catch((reason) => {
+            console.error(reason);
+          });
+      };
+
+    const getImage = async(setUrl,setUser,setLike,setThumb,img_no1,click_type) => {
+       
+        const config = {
+            headers: {
+              'Content-Type' : 'application/json'
+            }
+          }
+ 
+        try{
+            axios.post('/home/detail', { img_no: img_no1, type: click_type.type } , config).then((res) => {
+                console.log(res)
+                const data1 = res.data.img_info;
+                console.log(data1);
+                setUrl(data1.img_url);
+                setUser(data1.user_id);
+                setLike(res.data.like_or_unlike);
+                setThumb(data1.profile_thum);
+
+
+                dispatch({
+                    type: GET_IMAGE,
+                    payload: res.data
+                });
+             })
+            } catch {
+            dispatch({
+                type: CLEAR_IMAGE,     
+            })
+        }
     }
+    // const getImage = async(formData) => {
+    //     console.log(formData)
+    //     const config = {
+    //         headers: {
+    //           'Content-Type' : 'application/json'
+    //         }
+    //       }
+ 
+    //     try{
+    //         const res = await axios.post('/home/detail', formData, config);
+    //         console.log(res)
+
+    //         dispatch({
+    //             type: GET_IMAGE,
+    //             payload: res.data
+    //         });
+    //     } catch {
+    //         dispatch({
+    //             type: CLEAR_IMAGE,     
+    //         })
+    //     }
+    // }
+
+    // const getImage = async(formData) => {
+    //     console.log(formData)
+    //     const config = {
+    //         headers: {
+    //           'Content-Type' : 'application/json'
+    //         }
+    //       }
+ 
+    //     try{
+    //         const res = await axios.post('/home/detail', formData, config);
+    //         console.log(res)
+    //         const data1 = res.data.img_info;
+    //         console.log(data1);
 
 
-    const searchImages = async text => {
-        setLoading();
+    //         dispatch({
+    //             type: GET_IMAGE,
+    //             payload: res.data
+    //         });
+    //     } catch {
+    //         dispatch({
+    //             type: CLEAR_IMAGE,     
+    //         })
+    //     }
+    // }
 
-        const res = await axios.get(
-        `/home/`);
-
-        dispatch({
-            type: SEARCH_IMAGES,
-            payload:res.data.items
-        })
-    }
 
 
     const fileHandler = (e) => {
@@ -144,24 +247,7 @@ const BeetState = props => {
 
 
 
-
-
-    
-    // Get Repos
-    // const getImageRepos = async(imagename) => {
-    //     setLoading();
-    
-    //     const res = await axios.get(
-    //       `https://api.github.com/users/${imagename}/repos?per_page=5&sort=created:asc&client_id=
-    //       ${githubClientId}&client_secret=${githubClientSecret}`);
-
-    //       dispatch({
-    //           type: GET_REPOS,
-    //           payload: res.data
-    //       })
-    //     }
-
-    // Clear Users
+ // Clear Users
     const clearImages = () => dispatch({ type: CLEAR_IMAGES})
 
     // Set Loading
@@ -174,6 +260,12 @@ const BeetState = props => {
     
     // Function selector
 
+    const setClickTypeR = () => dispatch( {type : SET_CLICK_TYPE_R})
+    const setClickTypeS = () => dispatch( {type : SET_CLICK_TYPE_S})
+    const clearClickType = () => dispatch( {type : CLEAR_CLICK_TYPE})
+    
+    
+
     return (
         <BeetContext.Provider
             value = {{
@@ -182,15 +274,20 @@ const BeetState = props => {
                 tag_list: state.tag_list,
                 search_tags : state.search_tags,
                 selected_files : state.selected_files,
-                searchImages,
+                click_type : state.click_type,
                 clearImages,
                 getHomeImages,
                 setSearchTags,
                 getPublicImages,
                 getFavoriteImages,
+                getImage,
                 fileHandler,
                 setLoading,
-                setLoadingFalser
+                setLoadingFalser,
+                setClickTypeR,
+                setClickTypeS,
+                clearClickType,
+                likeApi
             }}
             >
                 {props.children}

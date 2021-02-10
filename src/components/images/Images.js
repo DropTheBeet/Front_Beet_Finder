@@ -8,14 +8,6 @@ const Images = ({ path }) => {
     const beetContext = useContext(BeetContext);
 
     const { loading, images, getFavoriteImages} = beetContext;
-
-
-    useEffect(() => {
-        if(path ==="Favorite"){
-            getFavoriteImages()
-        }
-    }, [])
-
     
     if(loading) {
         return <Spinner />
@@ -23,7 +15,7 @@ const Images = ({ path }) => {
         return (
             <div style= {imageStyle}>
                 {images.map(image => (
-                    <ImageItem key={image.img_no} image={image} />
+                    <ImageItem key={image.img_no} image={image} path={path} />
                 ))}
             </div>
         );

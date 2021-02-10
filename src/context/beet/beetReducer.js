@@ -5,7 +5,12 @@ import {
     GET_IMAGE,
     SELECT_IMAGES,
     SET_SEARCH_TAGS,
-    FALSE_LOADING
+    FALSE_LOADING,
+    CLEAR_IMAGE,
+    SET_CLICK_TYPE_R,
+    SET_CLICK_TYPE_S,
+    CLEAR_CLICK_TYPE,
+    CLEAR_TAG_LIST
 } from '../types';
 
 export default (state, action) => {
@@ -21,7 +26,6 @@ export default (state, action) => {
             return {
                 ...state,
                 image : action.payload,
-
                 loading: false
             }
         case CLEAR_IMAGES:
@@ -30,13 +34,24 @@ export default (state, action) => {
                 images: [],
                 loading: false
             }
-        case SELECT_IMAGES: {
+        case SELECT_IMAGES: 
             return {
                 ...state,
                 selected_files: action.payload,
                 loading: false
             }
-        }
+        case GET_IMAGE: 
+            return {
+                ...state,
+                image : action.payload,
+                loading: false
+            }
+        case CLEAR_IMAGE: 
+            return {
+                ...state,
+                image : {},
+                loading: false
+            }
         case SET_LOADING:
             return {
                 ...state,
@@ -46,12 +61,32 @@ export default (state, action) => {
             return {
                 ...state,
                 loading: false
-            }
+            };
         case SET_SEARCH_TAGS:
             return {
                 ...state,
                 search_tags: action.payload
+            };
+        case CLEAR_TAG_LIST:
+            return {
+                ...state,
+                tag_list : []
             }
+        case CLEAR_CLICK_TYPE:
+            return {
+                ...state,
+                click_type: {}
+            };
+        case SET_CLICK_TYPE_R:
+            return {
+                ...state,
+                click_type: {type : "R"}
+            };
+        case SET_CLICK_TYPE_S:
+            return {
+                ...state,
+                click_type: {type : "S"}
+            };
         default:
             return state;
     }

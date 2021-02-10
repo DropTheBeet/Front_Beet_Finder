@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useContext} from 'react';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import Navbar from './components/layout/Navbar';
 import Image from './components/images/Image';
@@ -18,7 +18,12 @@ import AuthState from './context/auth/AuthState'
 import AlertiState from './context/alerti/alertiState'
 import AlertState from './context/alert/AlertState'
 import setAuthToken from './utils/setAuthToken'
+import setUpdatePreference from './utils/setUpdatePreference'
+
+import AuthContext from './context/auth/authContext';
+
 import './App.css';
+
 
 if(localStorage.token) {
   setAuthToken(localStorage.token);
@@ -41,10 +46,10 @@ const App = () => {
           <PrivateRoute exact path='/' component={Home}/>
           <PrivateRoute exact path='/public' component={Public}/>
           <PrivateRoute exact path='/favorite' component={Favorite}/>
-          <Route exact path='/upload' component={Upload} />
+          <PrivateRoute exact path='/image/:img_no' component={Image} />
+          <PrivateRoute exact path='/upload' component={Upload} />
           <Route exact path='/register' component={Register} />
           <Route exact path='/login' component={Login} />
-          <Route exact path='/image/:img_no' component={Image} />
           <Route component={NotFound} />
         </Switch>
       </div>

@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useState } from 'react'
+import React, { Fragment, useContext, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import AlertiContext from '../../context/alerti/alertiContext'
@@ -12,7 +12,17 @@ const Navbar = ({icon, title}) => {
     const alertiContext = useContext(AlertiContext);
 
     const { selected_files, setLoading, setLoadingFalser } = beetContext
-    const { isAuthenticated, logout, user } = authContext;
+    const { isAuthenticated, logout, user, intervalFunction} = authContext;
+
+
+    useEffect( () =>{
+        if(!isAuthenticated){
+            clearInterval(intervalFunction)
+            console.log("sdsdsd")
+            console.log(intervalFunction)
+        }
+    },[isAuthenticated])
+
 
     const onLogout = () => {
         logout();
@@ -34,6 +44,7 @@ const Navbar = ({icon, title}) => {
 
         axios.post(`/home/upload`, formData, config)
         setLoadingFalser();
+        alertiContext.setAlerti(' The file upload is complete.', 'light');
     } catch (error) {
         setLoadingFalser()
         console.log(error)
