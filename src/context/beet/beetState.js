@@ -43,6 +43,9 @@ const BeetState = props => {
     // Get User
     const getHomeImages = async(formData) => {
         setLoading();
+        dispatch({
+            type: CLEAR_TAG_LIST,            
+        })
 
         console.log(formData)
 
@@ -68,6 +71,9 @@ const BeetState = props => {
 
     const getPublicImages = async(formData) => {
         setLoading();
+        dispatch({
+            type: CLEAR_TAG_LIST,            
+        })
 
         console.log(formData)
 
@@ -94,6 +100,9 @@ const BeetState = props => {
 
     const getFavoriteImages = async(formData) => {
         setLoading();
+        dispatch({
+            type: CLEAR_TAG_LIST,            
+        })
 
         console.log(formData)
 
@@ -114,6 +123,7 @@ const BeetState = props => {
             dispatch({
                 type: CLEAR_IMAGES,            
             })
+
         }
     }
 
