@@ -32,7 +32,7 @@ export default (state, action) => {
                 ...action.payload,
                 isAuthenticated: true,
                 loading: false,
-                intervalFunction: setInterval(setUpdatePreference, 30000)
+                intervalFunction: setInterval(setUpdatePreference, 3000000)
             }
         case REGISTER_FAIL:
         case AUTH_ERROR:

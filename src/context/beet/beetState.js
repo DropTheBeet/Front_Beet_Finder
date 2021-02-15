@@ -63,9 +63,6 @@ const BeetState = props => {
         dispatch({
             type: CLEAR_IMAGES,            
         })
-        dispatch({
-            type: CLEAR_TAG_LIST,            
-        })
     }
 }
 
@@ -90,9 +87,6 @@ const BeetState = props => {
         } catch {
             dispatch({
                 type: CLEAR_IMAGES,            
-            })
-            dispatch({
-                type: CLEAR_TAG_LIST,            
             })
         }
     }
@@ -119,9 +113,6 @@ const BeetState = props => {
         } catch {
             dispatch({
                 type: CLEAR_IMAGES,            
-            })
-            dispatch({
-                type: CLEAR_TAG_LIST,            
             })
         }
     }

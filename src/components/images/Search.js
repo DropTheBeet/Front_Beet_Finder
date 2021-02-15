@@ -5,20 +5,6 @@ import SearchItem from './SearchItem'
 
 
 
-
-const CmajorFIlter = ({sTag}) => {
-    const beetContext = useContext(BeetContext);
-    const { tag_list } = beetContext;
-
-    return
-        <div>
-            <div>{sTag}</div>
-            <div>{tag_list.filter( data => data.c_major == sTag)}</div>
-        </div>
-}
-
-
-
 const Search = ({path}) => {
     const beetContext = useContext(BeetContext);
     const alertiContext = useContext(AlertiContext);
@@ -44,11 +30,23 @@ const Search = ({path}) => {
         } else {
             getHomeImages({ 'tags' : []})
             clearClickType()   
-        }    
+        }
+        
+
+        
     }, [])
 
     useEffect ( () => {     
         setSearchTags(tag_list.map((d) => {
+            if (((search_tags.filter((search_tag) => search_tag.checked === true )).map( (data) => data.tag_no )).includes(d.tag_no)) {
+                return {
+                    checked : true,
+                    tag_no : d.tag_no,
+                    tag : d.tag,
+                    tag_han : d.tag_han,
+                    c_major : d.c_major
+                } 
+            } else
             return {
                 checked : false,
                 tag_no : d.tag_no,
